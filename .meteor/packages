@@ -19,3 +19,12 @@ shell-server@0.4.0            # Server-side component of the `meteor shell` comm
 
 kadira:flow-router
 kadira:blaze-layout
+accounts-ui
+accounts-password
+meteortoys:allthings
+useraccounts:bootstrap
+aldeed:template-extension
+session
+juliancwirko:s-alert
+juliancwirko:s-alert-flip
+juliancwirko:s-id

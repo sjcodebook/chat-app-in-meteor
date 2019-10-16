@@ -1,0 +1,44 @@
+<template name="signup">
+  <main>
+    <div class="container" style="text-align: center; width: 30%;">
+      <h3 class="display-4">Meteor Chat App</h3>
+      <br />
+
+      <form class="form-signin signup-form">
+        {{> sAlert}}
+        <h1 class="h3 mb-3 font-weight-normal">Please Sign Up</h1>
+        <label for="newinputEmail" class="sr-only">Email Address</label>
+        <input
+          type="email"
+          id="newinputEmail"
+          class="form-control email-address-input mb-2"
+          placeholder="Email Address"
+          required
+          autofocus
+        />
+        <label for="newinputuser" class="sr-only">Username</label>
+        <input
+          type="text"
+          id="newinputuser"
+          class="form-control email-address-input mb-2"
+          placeholder="Username"
+          required
+        />
+        <label for="newinputPassword" class="sr-only">Password</label>
+        <input
+          type="password"
+          id="newinputPassword"
+          class="form-control password-input mb-2"
+          placeholder="Password"
+          required
+        />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          <div id="signUnBtn" style="display: inline;">
+            Sign Up
+          </div>
+        </button>
+      </form>
+      <a href="/">Back</a>
+    </div>
+  </main>
+</template>

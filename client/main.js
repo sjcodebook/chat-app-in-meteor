@@ -1,3 +1,12 @@
+import { Template } from 'meteor/templating';
+
+Template.main.onCreated(function() {
+  let self = this;
+  self.autorun(function() {
+    self.subscribe('Meteor.users');
+  });
+});
+
 // // Connection
 // Meteor.startup(() => {
 //   // const PORT = window.socketPort || 3003;
