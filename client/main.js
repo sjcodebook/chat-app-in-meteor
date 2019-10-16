@@ -1,6 +1,9 @@
 // Connection
 Meteor.startup(() => {
-  let socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
+  const PORT = window.socketPort || 3003;
+  let socket = require('socket.io-client')(
+    `https://chatmeteor.herokuapp.com/${PORT}`
+  );
 
   socket.on('connect', function() {
     console.log('Client connected');
