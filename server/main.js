@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import http from 'http';
 import socket_io from 'socket.io';
 
-const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
+const PORT = 'https://chatmeteor.herokuapp.com/';
 const users = [],
   connections = [];
 
