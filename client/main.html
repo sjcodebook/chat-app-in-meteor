@@ -6,64 +6,130 @@
   <!-- Latest compiled and minified CSS -->
   <link
     rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous"
+  />
+  <!-- Font Awesome File -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
   <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
     crossorigin="anonymous"
   ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-  <style>
-    body {
-      margin-top: 30px;
-    }
-
-    #messageArea {
-      display: none;
-    }
-  </style>
 </head>
 <template name="main">
   <div class="container">
-    <div id="userFormArea" class="row">
-      <div class="col-md-12">
-        <form id="userForm">
-          <div class="form-group">
-            <label>Enter Username:</label>
-            <input type="text" name="" id="username" required />
-            <br />
-            <input type="submit" class="btn btn-primary" value="Enter" />
+    <!-- Content wrapper start -->
+    <div class="content-wrapper">
+      <!-- Row start -->
+      <div class="row gutters">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card m-0">
+            <!-- Row start -->
+            <div
+              class="row no-gutters"
+              style="height: 100vh; overflow-y: scroll; overflow-x: hidden;"
+            >
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+                <div class="users-container">
+                  <div class="chat-search-box">
+                    <button class="btn btn-block btn-success">
+                      Add New Contact
+                    </button>
+                  </div>
+                  <ul class="users">
+                    <li class="person" data-chat="person1">
+                      <div class="user">
+                        <img
+                          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                          alt="Retail Admin"
+                        />
+                        <span class="status busy"></span>
+                      </div>
+                      <p class="name-time">
+                        <span class="name">Steve Bangalter</span>
+                        <span class="time">15/02/2019</span>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                <div class="selected-user">
+                  <span>To: <span class="name">Emily Russell</span></span>
+                </div>
+                <div class="chat-container">
+                  <ul class="chat-box chatContainerScroll">
+                    <li class="chat-left">
+                      <div class="chat-avatar">
+                        <img
+                          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                          alt="Retail Admin"
+                        />
+                        <div class="chat-name">Russell</div>
+                      </div>
+                      <div class="chat-text">
+                        Hello, I'm Russell. <br />How can I help you today?
+                      </div>
+                      <div class="chat-hour">
+                        08:55 <span class="fa fa-check-circle ml-2"></span>
+                      </div>
+                    </li>
+                    <li class="chat-right">
+                      <div class="chat-hour">
+                        08:56 <span class="fa fa-check-circle ml-2"></span>
+                      </div>
+                      <div class="chat-text">
+                        Hi, Russell <br />
+                        I need more information about Developer Plan.
+                      </div>
+                      <div class="chat-avatar">
+                        <img
+                          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                          alt="Retail Admin"
+                        />
+                        <div class="chat-name">Sam</div>
+                      </div>
+                    </li>
+                  </ul>
+                  <div
+                    class="fixed-bottom col-md-6"
+                    style="margin-left: 475px; display: inline;"
+                  >
+                    <textarea
+                      class="form-control"
+                      rows="2"
+                      placeholder="Your Message Here...."
+                    ></textarea>
+                    <i
+                      class="fixed-bottom fa fa-send-o"
+                      style="display: inline; margin-left: 1150px; font-size: 40px; color: green;"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Row end -->
           </div>
-        </form>
-      </div>
-    </div>
-
-    <div id="messageArea" class="row">
-      <div class="col-md-4">
-        <div class="well">
-          <h3>Online Users</h3>
-          <ul class="list-group" id="users"></ul>
         </div>
       </div>
-      <div class="col-md-8">
-        <div class="chat" id="chat"></div>
-        <form id="messageForm">
-          <div class="form-group">
-            <label>Enter Message</label>
-            <textarea
-              class="form-control"
-              id="message"
-              cols="30"
-              rows="10"
-            ></textarea>
-            <br />
-            <input type="submit" class="btn btn-primary" value="Send Message" />
-          </div>
-        </form>
-      </div>
+      <!-- Row end -->
     </div>
+    <!-- Content wrapper end -->
   </div>
 </template>
