@@ -8,3 +8,7 @@ Meteor.publish('Meteor.users', function() {
 Meteor.publish('connections', function() {
   return connections.find({}, { sort: { created_at: -1 } });
 });
+
+Meteor.publish('messages', function() {
+  return messages.find({}, { sort: { created_at: -1 } });
+});
