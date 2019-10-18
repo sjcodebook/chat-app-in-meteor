@@ -7,7 +7,6 @@ Template.main.onCreated(function() {
     self.subscribe('connections');
     self.subscribe('messages');
     Meteor.subscribe('userConnections');
-    Meteor.subscribe('userMessages');
   });
 });
 
@@ -31,10 +30,11 @@ Template.main.helpers({
 Template.main.events({
   'click .connectedPerson': function(e) {
     $('.connectedPerson').removeClass('active-user');
-    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
-    const connectedUser = Meteor.users
-      .find({ user_id: e.currentTarget.id })
-      .fetch();
+    let msgStr = '';
+    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch(),
+      connectedUser = Meteor.users
+        .find({ user_id: e.currentTarget.id })
+        .fetch();
     $(`#${connectedUser[0].user_id}`).addClass('active-user');
 
     const sentArr = messages
@@ -51,6 +51,10 @@ Template.main.events({
         .fetch(),
       allMessages = sentArr.concat(recievedArr);
 
+    $('#mainContainerChatHead').empty();
+    $('#chatBox').empty();
+    $('#messageContainer').empty();
+
     allMessages.forEach(e => {
       if (e.send_by === currUser[0].user_id) {
         e['sent'] = true;
@@ -58,7 +62,6 @@ Template.main.events({
         e['sent'] = false;
       }
     });
-    let msgStr = '';
 
     allMessages.forEach(e => {
       if (e.sent) {
@@ -100,8 +103,6 @@ Template.main.events({
       }
     });
 
-    $('#mainContainerChatHead').empty();
-
     document.getElementById('mainContainerChatHead').insertAdjacentHTML(
       'afterbegin',
       `<div class="selected-user">
@@ -110,11 +111,7 @@ Template.main.events({
     `
     );
 
-    $('#chatBox').empty();
-
     document.getElementById('chatBox').insertAdjacentHTML('afterbegin', msgStr);
-
-    $('#messageContainer').empty();
 
     document.getElementById('messageContainer').insertAdjacentHTML(
       'afterbegin',

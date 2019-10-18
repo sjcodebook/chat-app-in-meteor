@@ -30,32 +30,3 @@ Meteor.publish('userConnections', function() {
       self.ready();
     });
 });
-
-// Meteor.publish('userMessages', function(id) {
-//   let self = this;
-//   let connectionView = [];
-//   const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
-//   messages
-//     .rawCollection()
-//     .aggregate([
-//       {
-//         $match: {
-//           send_by: { $eq: currUser[0].user_id },
-//           recieved_by: { $eq: id }
-//         }
-//       },
-//       {
-//         $addFields: { sent: true }
-//       },
-//       { $sort: { created_at: -1 } }
-//     ])
-//     .toArray()
-//     .then(function(result) {
-//       connectionView = result;
-//       console.log(connectionView);
-//       connectionView.forEach(e => {
-//         self.added('userMessages', uuidv4(), e);
-//       });
-//       self.ready();
-//     });
-// });

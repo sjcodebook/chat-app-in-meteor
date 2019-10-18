@@ -23,8 +23,6 @@ Meteor.startup(() => {
 
     // Disconnect
     socket.on('disconnect', data => {
-      users.splice(users.indexOf(socket.username), 1);
-      updateUsernames();
       connections.splice(connections.indexOf(data), 1);
       console.log('Disconnected: %s sockets connected', connections.length);
     });
@@ -33,19 +31,7 @@ Meteor.startup(() => {
     socket.on('send message', data => {
       io.sockets.emit('new message', { msg: data, user: socket.username });
     });
-
-    // New User
-    socket.on('new user', (data, callback) => {
-      callback(true);
-      socket.username = data;
-      users.push(socket.username);
-      updateUsernames();
-    });
   });
-
-  function updateUsernames() {
-    io.sockets.emit('get users', users);
-  }
 
   // Start server
   try {

@@ -34,14 +34,6 @@ Meteor.startup(() => {
       });
       $username.val('');
     });
-
-    socket.on('get users', function(data) {
-      let html = '';
-      for (let i = 0; i < data.length; i++) {
-        html += '<li class="list-group-item">' + data[i] + '</li>';
-      }
-      $users.html(html);
-    });
   });
   socket.on('disconnect', function() {
     console.log('Client disconnected');
