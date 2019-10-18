@@ -4,7 +4,32 @@ Template.main.onCreated(function() {
   let self = this;
   self.autorun(function() {
     self.subscribe('Meteor.users');
+    self.subscribe('connections');
+    Meteor.subscribe('userConnections', true);
   });
+});
+
+Template.main.helpers({
+  haveUsers(name) {
+    if (!name) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+
+  fetchConnection() {
+    const connections = [],
+      connectionArr = userConnections.find({}).fetch();
+    connectionArr[0].Connections.forEach(e => {
+      let connectedUser = Meteor.users
+        .find({ user_id: e.connected_to })
+        .fetch();
+      connections.push(connectedUser[0]);
+    });
+
+    return connections;
+  }
 });
 
 // // Connection

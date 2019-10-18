@@ -1,5 +1,6 @@
 body {
   margin-top: 20px;
+  overflow: hidden;
 }
 /*************** 1.Variables ***************/
 
@@ -395,4 +396,8 @@ ul {
   to {
     -webkit-transform: rotate(359deg);
   }
+}
+
+a {
+  text-decoration: none !important;
 }

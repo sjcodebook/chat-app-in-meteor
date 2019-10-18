@@ -55,6 +55,7 @@
                     >
                   </div>
                   <ul class="users">
+                    {{#each fetchConnection}}
                     <li class="person" data-chat="person1">
                       <div class="user">
                         <img
@@ -64,10 +65,12 @@
                         <span class="status busy"></span>
                       </div>
                       <p class="name-time">
-                        <span class="name">Steve Bangalter</span>
-                        <span class="time">15/02/2019</span>
+                        <span class="name">{{ name }}</span>
+                        <br />
+                        <span class="time">{{ email }}</span>
                       </p>
                     </li>
+                    {{/each}}
                   </ul>
                 </div>
               </div>

@@ -32,18 +32,25 @@ Template.search.events({
       document.getElementById('searchResults').insertAdjacentHTML(
         'afterbegin',
         `
-      <div class="my-3 p-3 bg-white rounded shadow-sm">
-      <h6 class="border-bottom border-gray pb-2 mb-0">Search Result:</h6>
-      <div class="media text-muted pt-3">
-        <i class="far fa-user-circle mr-2" style="font-size: 1.5em;"></i>
-        <p class="media-body pb-3 mb-0 small lh-125  border-gray">
-          <strong id="searchUsername" class="d-block text-gray-dark"
-            >${userArr[0].name}</strong
-          >
-          <button id=${userArr[0].user_id} class="userAddBtn btn btn-primary btn-sm mt-2">Add</button>
-        </p>
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Search Result:</h6>
+        <div class="media text-muted pt-3">
+          <i class="far fa-user-circle mr-2" style="font-size: 1.5em;"></i>
+          <p class="media-body pb-3 mb-0 small lh-125  border-gray">
+            <strong id="searchUsername" class="d-block text-gray-dark"
+              >${userArr[0].name}</strong
+            >
+            <a href="/">
+              <button
+                id="${userArr[0].user_id}"
+                class="userAddBtn btn btn-primary btn-sm mt-2"
+              >
+                Add
+              </button></a
+            >
+          </p>
+        </div>
       </div>
-    </div>
       `
       );
     }

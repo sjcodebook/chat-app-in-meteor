@@ -23,11 +23,25 @@ Meteor.methods({
   },
 
   addUserConnection: function(id) {
-    const currUser = Meteor.userId();
-    let user_id = Meteor.users.find({ _id: currUser }).fetch();
-    user_id = user_id[0].user_id;
+    let user = Meteor.users.find({ _id: Meteor.userId() }).fetch(),
+      prevConnection = connections
+        .find({
+          user_id: user[0].user_id
+        })
+        .fetch(),
+      connectionIds = [];
 
-    if (user_id === id) {
+    prevConnection.forEach(e => {
+      connectionIds.push(e.connected_to);
+    });
+
+    if (user[0].user_id === id) {
+      throw new Meteor.Error(
+        500,
+        'Error 500: Not unique',
+        'the document is not unique'
+      );
+    } else if (connectionIds.includes(id)) {
       throw new Meteor.Error(
         500,
         'Error 500: Not unique',
@@ -36,7 +50,7 @@ Meteor.methods({
     } else {
       connections.insert({
         connection_id: uuidv4(),
-        user_id: user_id,
+        user_id: user[0].user_id,
         connected_to: id,
         created_at: new Date()
       });
