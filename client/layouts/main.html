@@ -56,7 +56,7 @@
                   </div>
                   <ul class="users">
                     {{#each fetchConnection}}
-                    <li class="person" data-chat="person1">
+                    <li class="person connectedPerson" id="{{ user_id }}">
                       <div class="user">
                         <img
                           src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
@@ -74,58 +74,15 @@
                   </ul>
                 </div>
               </div>
-              <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
-                <div class="selected-user">
-                  <span>To: <span class="name">Emily Russell</span></span>
-                </div>
-                <div class="chat-container">
-                  <ul class="chat-box chatContainerScroll">
-                    <li class="chat-left">
-                      <div class="chat-avatar">
-                        <img
-                          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-                          alt="Retail Admin"
-                        />
-                        <div class="chat-name">Russell</div>
-                      </div>
-                      <div class="chat-text">
-                        Hello, I'm Russell. <br />How can I help you today?
-                      </div>
-                      <div class="chat-hour">
-                        08:55 <span class="fa fa-check-circle ml-2"></span>
-                      </div>
-                    </li>
-                    <li class="chat-right">
-                      <div class="chat-hour">
-                        08:56 <span class="fa fa-check-circle ml-2"></span>
-                      </div>
-                      <div class="chat-text">
-                        Hi, Russell <br />
-                        I need more information about Developer Plan.
-                      </div>
-                      <div class="chat-avatar">
-                        <img
-                          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-                          alt="Retail Admin"
-                        />
-                        <div class="chat-name">Sam</div>
-                      </div>
-                    </li>
-                  </ul>
-                  <div
-                    class="fixed-bottom col-md-6"
-                    style="margin-left: 475px; display: inline;"
-                  >
-                    <textarea
-                      class="form-control"
-                      rows="2"
-                      placeholder="Your Message Here...."
-                    ></textarea>
-                    <i
-                      class="fixed-bottom fa fa-send-o"
-                      style="display: inline; margin-left: 1150px; font-size: 40px; color: green;"
-                    ></i>
-                  </div>
+              <div
+                id="mainContainerChat"
+                class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9"
+              >
+                <div
+                  style="width: 100%; height: 100%; text-align: center; margin-top: 110px;"
+                  class="display-4"
+                >
+                  No User Selected
                 </div>
               </div>
             </div>

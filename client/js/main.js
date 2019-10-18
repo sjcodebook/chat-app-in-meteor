@@ -28,7 +28,79 @@ Template.main.helpers({
       connections.push(connectedUser[0]);
     });
 
+    console.log(connections);
+
     return connections;
+  }
+});
+
+Template.main.events({
+  'click .connectedPerson': function(e) {
+    $('.connectedPerson').removeClass('active-user');
+    const connectedUser = Meteor.users
+      .find({ user_id: e.currentTarget.id })
+      .fetch();
+    $(`#${connectedUser[0].user_id}`).addClass('active-user');
+
+    $('#mainContainerChat').empty();
+
+    document.getElementById('mainContainerChat').insertAdjacentHTML(
+      'afterbegin',
+      `<div class="selected-user">
+      <span
+        >To: <span class="name">${connectedUser[0].name}</span></span
+      >
+    </div>
+    <div class="chat-container">
+      <ul class="chat-box chatContainerScroll">
+        <li class="chat-left">
+          <div class="chat-avatar">
+            <img
+              src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+              alt="Retail Admin"
+            />
+            <div class="chat-name">Russell</div>
+          </div>
+          <div class="chat-text">
+            Hello, I'm Russell. <br />How can I help you today?
+          </div>
+          <div class="chat-hour">
+            08:55 <span class="fa fa-check-circle ml-2"></span>
+          </div>
+        </li>
+        <li class="chat-right">
+          <div class="chat-hour">
+            08:56 <span class="fa fa-check-circle ml-2"></span>
+          </div>
+          <div class="chat-text">
+            Hi, Russell <br />
+            I need more information about Developer Plan.
+          </div>
+          <div class="chat-avatar">
+            <img
+              src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+              alt="Retail Admin"
+            />
+            <div class="chat-name">Sam</div>
+          </div>
+        </li>
+      </ul>
+      <div
+        class="fixed-bottom col-md-6"
+        style="margin-left: 475px; display: inline;"
+      >
+        <textarea
+          class="form-control"
+          rows="2"
+          placeholder="Your Message Here...."
+        ></textarea>
+        <i
+          class="fixed-bottom fa fa-send-o"
+          style="display: inline; margin-left: 1150px; font-size: 40px; color: green;"
+        ></i>
+      </div>
+    </div>`
+    );
   }
 });
 

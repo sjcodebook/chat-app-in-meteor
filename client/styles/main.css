@@ -115,19 +115,19 @@ body {
     linear,
     left top,
     left bottom,
-    from(#f7f9fb),
-    to(#ffffff)
+    from(#0c457e),
+    to(#9e2424)
   );
   /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient(right, #f7f9fb, #ffffff);
+  background-image: -webkit-linear-gradient(right, #1f5d9b, #bb5151);
   /* Chrome 10+, Saf5.1+, iOS 5+ */
-  background-image: -moz-linear-gradient(right, #f7f9fb, #ffffff);
+  background-image: -moz-linear-gradient(right, #17508a, #be0e0e);
   /* FF3.6 */
-  background-image: -ms-linear-gradient(right, #f7f9fb, #ffffff);
+  background-image: -ms-linear-gradient(right, #83bffa, #944d4d);
   /* IE10 */
-  background-image: -o-linear-gradient(right, #f7f9fb, #ffffff);
+  background-image: -o-linear-gradient(right, #4786c5, #922626);
   /* Opera 11.10+ */
-  background-image: linear-gradient(right, #f7f9fb, #ffffff);
+  background-image: linear-gradient(right, #405569, #d41a1a);
 }
 
 .users .person:last-child {
