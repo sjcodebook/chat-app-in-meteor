@@ -29,7 +29,7 @@ Meteor.startup(() => {
 
     // Send Message
     socket.on('send message', data => {
-      io.sockets.emit('new message', { msg: data, user: socket.username });
+      io.sockets.emit('new message', { msg: data });
     });
   });
 

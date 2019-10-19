@@ -1,4 +1,16 @@
 import { Template } from 'meteor/templating';
+const PORT = window.socketPort || 3003;
+const socket = require('socket.io-client')(`http://localhost:${PORT}`);
+
+Meteor.startup(() => {
+  socket.on('connect', function() {
+    console.log('Client connected');
+  });
+});
+
+socket.on('disconnect', function() {
+  console.log('Client disconnected');
+});
 
 Template.main.onCreated(function() {
   let self = this;
@@ -131,11 +143,33 @@ Template.main.events({
   },
 
   'click .sendMsgBtn': function(e) {
+    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
     const msgContent = $(`#${e.currentTarget.id}message`).val();
 
     if (msgContent !== '') {
       Meteor.call('addNewMessage', e.currentTarget.id, msgContent);
+      socket.emit('send message', msgContent);
       $(`#${e.currentTarget.id}message`).val('');
+      socket.on('new message', function(data) {
+        document.getElementById('chatBox').insertAdjacentHTML(
+          'beforeend',
+          `<li class="chat-right">
+          <div class="chat-hour">
+            08:56 <span class="fa fa-check-circle ml-2"></span>
+          </div>
+          <div class="chat-text">
+            ${msgContent}
+          </div>
+          <div class="chat-avatar">
+            <img
+              src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+              alt="Retail Admin"
+            />
+            <div class="chat-name">${currUser[0].name}</div>
+          </div>
+        </li>`
+        );
+      });
     }
   }
 });

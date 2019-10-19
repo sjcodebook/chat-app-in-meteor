@@ -2,6 +2,10 @@ body {
   margin-top: 20px;
   overflow: hidden;
 }
+
+.container {
+  background-color: rgb(201, 193, 193);
+}
 /*************** 1.Variables ***************/
 
 /* ------------------ Color Pallet ------------------ */
