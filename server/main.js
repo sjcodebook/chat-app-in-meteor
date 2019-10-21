@@ -19,17 +19,27 @@ Meteor.startup(() => {
   // New client
   io.on('connection', function(socket) {
     connections.push(socket);
+
     console.log('connected: %s sockets connected', connections.length);
+
+    // We are using room of socket io
+    socket.on('join', function(data) {
+      socket.join(data.room_id);
+    });
+
+    // Send Message
+    socket.on('send message', data => {
+      io.sockets.in(data.room_id).emit('connectToRoom', {
+        msg: data.msg,
+        name: data.name,
+        msg_id: data.message_id
+      });
+    });
 
     // Disconnect
     socket.on('disconnect', data => {
       connections.splice(connections.indexOf(data), 1);
       console.log('Disconnected: %s sockets connected', connections.length);
-    });
-
-    // Send Message
-    socket.on('send message', data => {
-      io.sockets.emit('new message', { msg: data });
     });
   });
 

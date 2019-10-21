@@ -48,10 +48,20 @@ Meteor.methods({
         'the document is not unique'
       );
     } else {
+      const room_id = uuidv4();
       connections.insert({
         connection_id: uuidv4(),
         user_id: user[0].user_id,
         connected_to: id,
+        room_id: room_id,
+        created_at: new Date()
+      });
+
+      connections.insert({
+        connection_id: uuidv4(),
+        user_id: id,
+        connected_to: user[0].user_id,
+        room_id: room_id,
         created_at: new Date()
       });
     }

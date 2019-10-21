@@ -12,6 +12,51 @@ socket.on('disconnect', function() {
   console.log('Client disconnected');
 });
 
+socket.on('connectToRoom', function(data) {
+  const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
+  if (currUser[0].user_id === data.msg_id) {
+    document.getElementById('chatBox').insertAdjacentHTML(
+      'beforeend',
+      `<li class="chat-right">
+      <div class="chat-hour">
+        08:56 <span class="fa fa-check-circle ml-2"></span>
+      </div>
+      <div class="chat-text">
+        ${data.msg}
+      </div>
+      <div class="chat-avatar">
+        <img
+          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+          alt="Retail Admin"
+        />
+        <div class="chat-name">${data.name}</div>
+      </div>
+    </li>`
+    );
+  } else {
+    document.getElementById('chatBox').insertAdjacentHTML(
+      'beforeend',
+      `
+        <li class="chat-left">
+                <div class="chat-avatar">
+                  <img
+                    src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                    alt="Retail Admin"
+                  />
+                  <div class="chat-name">${data.name}</div>
+                </div>
+                <div class="chat-text">
+                ${data.msg}
+                </div>
+                <div class="chat-hour">
+                  08:55 <span class="fa fa-check-circle ml-2"></span>
+                </div>
+              </li>
+        `
+    );
+  }
+});
+
 Template.main.onCreated(function() {
   let self = this;
   self.autorun(function() {
@@ -34,13 +79,12 @@ Template.main.helpers({
     });
 
     return connections;
-  },
-
-  fetchMessages() {}
+  }
 });
 
 Template.main.events({
   'click .connectedPerson': function(e) {
+    // Feting old messages
     $('.connectedPerson').removeClass('active-user');
     let msgStr = '';
     const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch(),
@@ -62,6 +106,8 @@ Template.main.events({
         })
         .fetch(),
       allMessages = sentArr.concat(recievedArr);
+
+    allMessages.sort((a, b) => (a.created_at > b.created_at ? 1 : -1));
 
     $('#mainContainerChatHead').empty();
     $('#chatBox').empty();
@@ -131,7 +177,7 @@ Template.main.events({
       class="form-control text-message-area"
       rows="1"
       placeholder="Your Message Here...."
-      id=${connectedUser[0].user_id}message
+      id=${currUser[0].user_id}
     ></textarea>
     <i
       id=${connectedUser[0].user_id}
@@ -140,36 +186,44 @@ Template.main.events({
     ></i>
     `
     );
+    let connected_room_id = connections
+      .find({
+        user_id: currUser[0].user_id,
+        connected_to: connectedUser[0].user_id
+      })
+      .fetch();
+    socket.emit('join', {
+      room_id: connected_room_id[0].room_id
+    });
+    $('.contentContainer').animate(
+      {
+        scrollTop: document.body.scrollHeight
+      },
+      500
+    );
   },
 
   'click .sendMsgBtn': function(e) {
-    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
-    const msgContent = $(`#${e.currentTarget.id}message`).val();
+    const currUser = Meteor.users
+      .find({ user_id: $('.text-message-area').attr('id') })
+      .fetch();
+    const msgContent = $('.text-message-area').val();
+    let connected_room_id = connections
+      .find({
+        user_id: currUser[0].user_id,
+        connected_to: e.currentTarget.id
+      })
+      .fetch();
 
     if (msgContent !== '') {
       Meteor.call('addNewMessage', e.currentTarget.id, msgContent);
-      socket.emit('send message', msgContent);
-      $(`#${e.currentTarget.id}message`).val('');
-      socket.on('new message', function(data) {
-        document.getElementById('chatBox').insertAdjacentHTML(
-          'beforeend',
-          `<li class="chat-right">
-          <div class="chat-hour">
-            08:56 <span class="fa fa-check-circle ml-2"></span>
-          </div>
-          <div class="chat-text">
-            ${msgContent}
-          </div>
-          <div class="chat-avatar">
-            <img
-              src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-              alt="Retail Admin"
-            />
-            <div class="chat-name">${currUser[0].name}</div>
-          </div>
-        </li>`
-        );
+      socket.emit('send message', {
+        msg: msgContent,
+        room_id: connected_room_id[0].room_id,
+        name: currUser[0].name,
+        message_id: currUser[0].user_id
       });
+      $('.text-message-area').val('');
     }
   }
 });
