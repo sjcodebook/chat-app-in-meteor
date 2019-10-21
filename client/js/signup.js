@@ -11,7 +11,15 @@ Template.signup.events({
     email = email.trim().toLowerCase();
     userName = userName.trim();
 
-    Meteor.call('addUserMethod', email, userName, pass);
+    Meteor.call('addUserMethod', email, userName, pass, (err, result) => {
+      if (!err) {
+        Meteor.loginWithPassword(email, pass, function(error) {
+          if (error) {
+            sAlert.error('Invalid Email Or Password');
+          }
+        });
+      }
+    });
     window.location = '/';
   }
 });
