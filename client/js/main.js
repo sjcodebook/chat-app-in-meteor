@@ -193,6 +193,7 @@ Template.main.events({
         connected_to: connectedUser[0].user_id
       })
       .fetch();
+
     socket.emit('join', {
       room_id: connected_room_id[0].room_id
     });

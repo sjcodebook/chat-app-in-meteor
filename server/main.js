@@ -3,9 +3,8 @@ import http from 'http';
 import socket_io from 'socket.io';
 import { WebApp } from 'meteor/webapp';
 
-const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
-const users = [],
-  connections = [];
+// const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
+const connections = [];
 
 // Client-side config
 // WebAppInternals.addStaticJs(`
@@ -20,18 +19,21 @@ Meteor.startup(() => {
 
   // New client
   io.on('connection', function(socket) {
+    socket.room = socket.id;
     connections.push(socket);
 
     console.log('connected: %s sockets connected', connections.length);
 
     // We are using room of socket io
     socket.on('join', function(data) {
+      socket.leave(socket.room);
       socket.join(data.room_id);
+      socket.room = data.room_id;
     });
 
     // Send Message
     socket.on('send message', data => {
-      io.sockets.in(data.room_id).emit('connectToRoom', {
+      io.sockets.in(socket.room).emit('connectToRoom', {
         msg: data.msg,
         name: data.name,
         msg_id: data.message_id
