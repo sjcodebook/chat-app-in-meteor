@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import messages from './../collections/messages';
+import connections from './../collections/connections';
 import uuidv4 from 'uuid/v4';
 
 Meteor.methods({
@@ -13,5 +14,14 @@ Meteor.methods({
       content: content,
       created_at: new Date()
     });
+
+    connections.update(
+      { user_id: currUser[0].user_id, connected_to: id },
+      {
+        $set: {
+          last_connected: new Date()
+        }
+      }
+    );
   }
 });

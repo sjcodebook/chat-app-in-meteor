@@ -1,21 +1,21 @@
 import { Meteor } from 'meteor/meteor';
-// import http from 'http';
+import http from 'http';
 import socket_io from 'socket.io';
-import { WebApp } from 'meteor/webapp';
+// import { WebApp } from 'meteor/webapp';
 
-// const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
+const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
 const connections = [];
 
 // Client-side config
-// WebAppInternals.addStaticJs(`
-//   window.socketPort = ${PORT};
-// `);
+WebAppInternals.addStaticJs(`
+  window.socketPort = ${PORT};
+`);
 
 Meteor.startup(() => {
   // Server
-  // const server = http.createServer();
-  // const io = socket_io(server);
-  const io = socket_io(WebApp.httpServer);
+  const server = http.createServer();
+  const io = socket_io(server);
+  // const io = socket_io(WebApp.httpServer);
 
   // New client
   io.on('connection', function(socket) {
@@ -36,7 +36,8 @@ Meteor.startup(() => {
       io.sockets.in(socket.room).emit('connectToRoom', {
         msg: data.msg,
         name: data.name,
-        msg_id: data.message_id
+        msg_id: data.message_id,
+        created_at: data.created_at
       });
     });
 

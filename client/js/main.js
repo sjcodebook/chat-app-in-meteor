@@ -1,7 +1,8 @@
 import { Template } from 'meteor/templating';
-// const PORT = window.socketPort || 3003;
-// const socket = require('socket.io-client')(`http://localhost:${PORT}`);
-const socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
+import moment from 'moment';
+const PORT = window.socketPort || 3003;
+const socket = require('socket.io-client')(`http://localhost:${PORT}`);
+// const socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
 
 Meteor.startup(() => {
   socket.on('connect', function() {
@@ -33,7 +34,7 @@ socket.on('connectToRoom', function(data) {
           class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
           style="width:75px;"
         >
-          8:30pm <i class="fa fa-check-circle"></i>
+       ${data.created_at} <i class="fa fa-check-circle"></i>
         </div>
       </div>
     </div>`
@@ -56,7 +57,7 @@ socket.on('connectToRoom', function(data) {
           class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
           style="width:75px;"
         >
-          8:30pm  <i class="fa fa-check-circle"></i>
+        ${data.created_at} <i class="fa fa-check-circle"></i>
         </div>
       </div>
     </div>
@@ -95,6 +96,17 @@ Template.main.helpers({
     });
 
     return connections;
+  },
+
+  fetchLastConnection(id) {
+    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
+    const co = connections
+      .find({ user_id: currUser[0].user_id, connected_to: id })
+      .fetch();
+    co.forEach(e => {
+      e.last_connected = moment(e.last_connected).format('ll');
+    });
+    return co;
   }
 });
 
@@ -157,7 +169,9 @@ Template.main.events({
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
-              8:30pm <i class="fa fa-check-circle"></i>
+            ${moment(e.created_at).format(
+              'LT'
+            )} <i class="fa fa-check-circle"></i>
             </div>
           </div>
         </div>
@@ -180,7 +194,9 @@ Template.main.events({
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
-              8:30pm  <i class="fa fa-check-circle"></i>
+            ${moment(e.created_at).format(
+              'LT'
+            )}  <i class="fa fa-check-circle"></i>
             </div>
           </div>
         </div>`;
@@ -276,8 +292,10 @@ Template.main.events({
         msg: msgContent,
         room_id: connected_room_id[0].room_id,
         name: currUser[0].name,
-        message_id: currUser[0].user_id
+        message_id: currUser[0].user_id,
+        created_at: moment(new Date()).format('LT')
       });
+
       $('.text-message-area').val('');
       $('#mainDiv').animate({ scrollTop: 9999 }, 800);
     }

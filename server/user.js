@@ -54,6 +54,7 @@ Meteor.methods({
         user_id: user[0].user_id,
         connected_to: id,
         room_id: room_id,
+        last_connected: new Date(),
         created_at: new Date()
       });
 
@@ -62,6 +63,7 @@ Meteor.methods({
         user_id: id,
         connected_to: user[0].user_id,
         room_id: room_id,
+        last_connected: new Date(),
         created_at: new Date()
       });
     }
