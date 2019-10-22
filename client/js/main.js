@@ -18,43 +18,58 @@ socket.on('connectToRoom', function(data) {
   if (currUser[0].user_id === data.msg_id) {
     document.getElementById('chatBox').insertAdjacentHTML(
       'beforeend',
-      `<li class="chat-right">
-      <div class="chat-hour">
-        08:56 <span class="fa fa-check-circle ml-2"></span>
+      `<div
+      class="align-self-end self p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
+    >
+      <div class="options">
+        <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
       </div>
-      <div class="chat-text">
-        ${data.msg}
+      <span style='font-weight: 600;'>
+      ${data.name}
+      </span>
+      <div class="d-flex flex-row">
+        <div class="body m-1 mr-2"> ${data.msg}</div>
+        <div
+          class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
+          style="width:75px;"
+        >
+          8:30pm <i class="fa fa-check-circle"></i>
+        </div>
       </div>
-      <div class="chat-avatar">
-        <img
-          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-          alt="Retail Admin"
-        />
-        <div class="chat-name">${data.name}</div>
-      </div>
-    </li>`
+    </div>`
     );
   } else {
     document.getElementById('chatBox').insertAdjacentHTML(
       'beforeend',
-      `
-        <li class="chat-left">
-                <div class="chat-avatar">
-                  <img
-                    src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-                    alt="Retail Admin"
-                  />
-                  <div class="chat-name">${data.name}</div>
-                </div>
-                <div class="chat-text">
-                ${data.msg}
-                </div>
-                <div class="chat-hour">
-                  08:55 <span class="fa fa-check-circle ml-2"></span>
-                </div>
-              </li>
+      `<div
+      class="align-self-start p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
+    >
+      <div class="options">
+        <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+      </div>
+      <span style='font-weight: 600;'>
+      ${data.name}
+      </span>
+      <div class="d-flex flex-row">
+        <div class="body m-1 mr-2">${data.msg}</div>
+        <div
+          class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
+          style="width:75px;"
+        >
+          8:30pm  <i class="fa fa-check-circle"></i>
+        </div>
+      </div>
+    </div>
         `
     );
+  }
+  $('#mainDiv').animate({ scrollTop: 9999 }, 800);
+});
+
+$(document).keypress(function(event) {
+  var keycode = event.keyCode ? event.keyCode : event.which;
+  if (keycode == '13') {
+    $('.sendMsgBtn').click();
   }
 });
 
@@ -264,6 +279,7 @@ Template.main.events({
         message_id: currUser[0].user_id
       });
       $('.text-message-area').val('');
+      $('#mainDiv').animate({ scrollTop: 9999 }, 800);
     }
   }
 });
