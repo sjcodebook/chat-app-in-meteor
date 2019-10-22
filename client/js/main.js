@@ -133,14 +133,16 @@ Template.main.events({
           <div class="options">
             <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
           </div>
+          <span style='font-weight: 600;'>
           ${currUser[0].name}
+          </span>
           <div class="d-flex flex-row">
             <div class="body m-1 mr-2">${e.content}</div>
             <div
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
-              8:30pm
+              8:30pm <i class="fa fa-check-circle"></i>
             </div>
           </div>
         </div>
@@ -154,14 +156,16 @@ Template.main.events({
           <div class="options">
             <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
           </div>
+          <span style='font-weight: 600;'>
           ${connectedUser[0].name}
+          </span>
           <div class="d-flex flex-row">
             <div class="body m-1 mr-2">${e.content}</div>
             <div
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
-              8:30pm
+              8:30pm  <i class="fa fa-check-circle"></i>
             </div>
           </div>
         </div>`;
@@ -235,12 +239,8 @@ Template.main.events({
     socket.emit('join', {
       room_id: connected_room_id[0].room_id
     });
-    $('.contentContainer').animate(
-      {
-        scrollTop: document.body.scrollHeight
-      },
-      500
-    );
+
+    $('#mainDiv').animate({ scrollTop: 9999 }, 800);
   },
 
   'click .sendMsgBtn': function(e) {

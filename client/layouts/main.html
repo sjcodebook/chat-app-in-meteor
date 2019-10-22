@@ -35,6 +35,7 @@
   {{#if currentUser }}
   <!-- <div id="main-container"> -->
   <div
+    id="mainDiv"
     class="row h-100"
     style=" margin: 0px 0 0 305px;
     padding: 0 30px;
@@ -92,13 +93,10 @@
       <div class="row" id="chat-list" style="overflow:auto;">
         <ul class="users" style="width: 100%; padding-left:0px;">
           {{#each fetchConnection}}
-          <li
-            class="person connectedPerson"
-            id="{{ user_id }}"
-            style="width: 100%;"
-          >
+          <li class="person" style="width: 100%;">
             <div
-              class="chat-list-item d-flex flex-row w-100 p-2 border-bottom"
+              class="chat-list-item d-flex flex-row w-100 p-2 border-bottom connectedPerson"
+              id="{{ user_id }}"
               style="width: 100%;"
             >
               <img

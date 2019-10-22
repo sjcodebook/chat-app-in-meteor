@@ -158,3 +158,7 @@ ul {
 a {
   text-decoration: none !important;
 }
+
+.active-user {
+  background: hsl(0, 0%, 90%) !important;
+}
