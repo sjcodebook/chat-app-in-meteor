@@ -6,8 +6,8 @@
   <!-- Latest compiled and minified CSS -->
   <link
     rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
     crossorigin="anonymous"
   />
   <!-- Font Awesome File -->
@@ -29,81 +29,143 @@
   ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 </head>
+
 <template name="main">
   {{#if Template.subscriptionsReady}}
   {{#if currentUser }}
-  <div class="container">
-    <!-- Content wrapper start -->
-    <div class="content-wrapper">
-      <!-- Row start -->
-      <div class="row gutters">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="card m-0">
-            <!-- Row start -->
-            <div
-              class="row no-gutters contentContainer"
-              style="height: 100vh; overflow-y: scroll; overflow-x: hidden;"
-            >
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-                <div class="users-container">
-                  <div class="chat-search-box">
-                    {{> loginButtons}}
-                    <a href="/search">
-                      <button class="btn btn-block btn-success mt-2">
-                        Add New Contact
-                      </button></a
-                    >
-                  </div>
-                  <ul class="users">
-                    {{#each fetchConnection}}
-                    <li class="person connectedPerson" id="{{ user_id }}">
-                      <div class="user">
-                        <img
-                          src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-                          alt="Retail Admin"
-                        />
-                        <span class="status busy"></span>
-                      </div>
-                      <p class="name-time">
-                        <span class="name">{{ name }}</span>
-                        <br />
-                        <span class="time">{{ email }}</span>
-                      </p>
-                    </li>
-                    {{/each}}
-                  </ul>
-                </div>
-              </div>
-              <div
-                id="mainContainerChat"
-                class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9"
-              >
-                <div id="mainContainerChatHead">
-                  <div
-                    style="width: 100%; height: 100%; text-align: center; margin-top: 110px;"
-                    class="display-4"
-                  >
-                    No User Selected
-                  </div>
-                </div>
-                <div class="chat-container">
-                  <ul class="chat-box chatContainerScroll" id="chatBox"></ul>
-                  <div
-                    id="messageContainer"
-                    class="fixed-bottom col-md-6"
-                    style="margin-left: 475px; display: inline;"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <!-- Row end -->
+  <!-- <div id="main-container"> -->
+  <div
+    class="row h-100"
+    style=" margin: 0px 0 0 305px;
+    padding: 0 30px;
+    overflow-y: scroll;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+  height: 100vh;"
+  >
+    <div
+      class="col-lg-4 col-sm-5 col-md-4 d-flex flex-column"
+      id="chat-list-area"
+      style=" position: fixed;
+        width: 345px;
+        height:100vh;
+        left: 0;
+        right: 0;
+        overflow-y: scroll;
+        top: 0;"
+    >
+      <!-- Navbar -->
+      <div class="row d-flex flex-row align-items-center p-2 navbar">
+        <img
+          src="/images/smiley.jpg"
+          alt="Profile Photo"
+          class="img-fluid rounded-circle mr-2"
+          style="height:50px; cursor:pointer;"
+          id="display-pic"
+        />
+        <div class="text-white font-weight-bold" id="username">
+          {{> loginButtons}}
+        </div>
+        <div class="nav-item dropdown ml-auto" style="padding-right: 15px;">
+          <a
+            class=""
+            data-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ><i class="fas fa-ellipsis-v text-white"></i
+          ></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#">New Group</a>
+            <a class="dropdown-item" href="#">Archived</a>
+            <a class="dropdown-item" href="#">Starred</a>
+            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="#">Log Out</a>
           </div>
         </div>
       </div>
-      <!-- Row end -->
+
+      <!-- Chat List -->
+      <div class="row" id="chat-list" style="overflow:auto;">
+        <ul class="users" style="width: 100%; padding-left:0px;">
+          {{#each fetchConnection}}
+          <li
+            class="person connectedPerson"
+            id="{{ user_id }}"
+            style="width: 100%;"
+          >
+            <div
+              class="chat-list-item d-flex flex-row w-100 p-2 border-bottom"
+              style="width: 100%;"
+            >
+              <img
+                src="/images/person.png"
+                alt="Profile Photo"
+                class="img-fluid rounded-circle mr-2"
+                style="height:50px;"
+              />
+              <div class="w-50">
+                <div class="name">{{ name }}</div>
+                <div class="small last-message">{{ email }}</div>
+              </div>
+              <div class="flex-grow-1 text-right">
+                <div class="small time">21-10-2019</div>
+              </div>
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+      <div
+        class="justify-self-end align-items-center flex-row d-flex input-area p-2"
+        style="position:fixed;bottom:0;z-index:1030; width: 100%; left:0;"
+      >
+        Made with ❤ by SJ
+      </div>
     </div>
-    <!-- Content wrapper end -->
+
+    <!-- Message Area -->
+    <div class="container" style="max-width: 78vw; margin-left: -15px;">
+      <div
+        class="d-sm-flex flex-column col-lg-12 col-sm-7 col-md-8 p-0 h-100"
+        id="message-area"
+        style=" background-image: url('/images/back.jpg'); background-size: cover;background-attachment: fixed;"
+      >
+        <!-- Navbar -->
+        <div
+          class="row d-flex flex-row align-items-center p-2 m-0 navbar"
+          id="mainContainerChatHead"
+          style="position:fixed;top:0;z-index:1030; width: 76vw;"
+        >
+          <div
+            style="width: 100%; height: 100vh; text-align: center; margin-top: 110px;"
+            class="display-4"
+          >
+            <div class="w-100 h-100 overlay"></div>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div
+          class="d-flex flex-column"
+          style="margin-bottom: 60px; margin-top: 70px; overflow: scroll;"
+          id="chatBox"
+        ></div>
+
+        <!-- Input -->
+
+        <div
+          class="justify-self-end align-items-center flex-row d-flex input-area"
+          id="messageContainer"
+          style="position:fixed;bottom:0;z-index:1030; width: 76vw;"
+        ></div>
+      </div>
+    </div>
   </div>
+  <!-- </div> -->
   {{else}}
   {{> Login}}
   {{/if}}

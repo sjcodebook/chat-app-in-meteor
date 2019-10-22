@@ -126,46 +126,78 @@ Template.main.events({
       if (e.sent) {
         msgStr =
           msgStr +
-          `<li class="chat-right">
-        <div class="chat-hour">
-          08:56 <span class="fa fa-check-circle ml-2"></span>
+          `
+          <div
+          class="align-self-end self p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
+        >
+          <div class="options">
+            <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+          </div>
+          ${currUser[0].name}
+          <div class="d-flex flex-row">
+            <div class="body m-1 mr-2">${e.content}</div>
+            <div
+              class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
+              style="width:75px;"
+            >
+              8:30pm
+            </div>
+          </div>
         </div>
-        <div class="chat-text">
-          ${e.content}
-        </div>
-        <div class="chat-avatar">
-          <img
-            src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-            alt="Retail Admin"
-          />
-          <div class="chat-name">${currUser[0].name}</div>
-        </div>
-      </li>`;
+          `;
       } else {
         msgStr =
           msgStr +
-          `<li class="chat-left">
-        <div class="chat-avatar">
-          <img
-            src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-            alt="Retail Admin"
-          />
-          <div class="chat-name">${connectedUser[0].name}</div>
-        </div>
-        <div class="chat-text">
-          ${e.content}
-        </div>
-        <div class="chat-hour">
-          08:55 <span class="fa fa-check-circle ml-2"></span>
-        </div>
-      </li>`;
+          `<div
+          class="align-self-start p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
+        >
+          <div class="options">
+            <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+          </div>
+          ${connectedUser[0].name}
+          <div class="d-flex flex-row">
+            <div class="body m-1 mr-2">${e.content}</div>
+            <div
+              class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
+              style="width:75px;"
+            >
+              8:30pm
+            </div>
+          </div>
+        </div>`;
       }
     });
 
     document.getElementById('mainContainerChatHead').insertAdjacentHTML(
       'afterbegin',
-      `<div class="selected-user">
-      <span>To: <span class="name">${connectedUser[0].name}</span></span>
+      `   <div class="d-block d-sm-none">
+      <i
+        class="fas fa-arrow-left p-2 mr-2 text-white"
+        style="font-size: 1.5rem; cursor: pointer;"
+      ></i>
+    </div>
+    <a href="#"
+      ><img
+        src="/images/person.png"
+        alt="Profile Photo"
+        class="img-fluid rounded-circle mr-2"
+        style="height:50px;"
+        id="pic"
+    /></a>
+    <div class="d-flex flex-column">
+      <div class="text-white font-weight-bold" id="name">${connectedUser[0].name}</div>
+      <div class="text-white small" id="details">${connectedUser[0].email}</div>
+    </div>
+    <div class="d-flex flex-row align-items-center ml-auto">
+      <a href="#"
+        ><i class="fas fa-search mx-3 text-white d-none d-md-block"></i
+      ></a>
+      <a href="#"
+        ><i class="fas fa-paperclip mx-3 text-white d-none d-md-block"></i
+      ></a>
+      <a href="#"
+        ><i class="fas fa-ellipsis-v mr-2 mx-sm-3 text-white"></i
+      ></a>
     </div>
     `
     );
@@ -174,17 +206,23 @@ Template.main.events({
 
     document.getElementById('messageContainer').insertAdjacentHTML(
       'afterbegin',
-      `  <textarea
-      class="form-control text-message-area"
-      rows="1"
-      placeholder="Your Message Here...."
-      id=${currUser[0].user_id}
-    ></textarea>
-    <i
-      id=${connectedUser[0].user_id}
-      class="fixed-bottom fa fa-send-o sendMsgBtn"
-      style="display: inline; margin-left: 1150px; font-size: 40px; color: green;"
-    ></i>
+      `  <a href="#"
+            ><i
+              class="far fa-smile text-muted px-3"
+              style="font-size:1.8rem;"
+            ></i
+          ></a>
+          <input
+            type="text"
+            name="message"
+            id="${currUser[0].user_id}"
+            placeholder="Type a message"
+            class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm text-message-area input"
+          />
+          <i
+            id="${connectedUser[0].user_id}"
+            class="fas fa-paper-plane text-muted px-3 sendMsgBtn"
+            style="cursor:pointer; font-size:1.5rem;"</i>
     `
     );
     let connected_room_id = connections
