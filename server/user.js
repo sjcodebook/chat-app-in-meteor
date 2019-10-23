@@ -16,10 +16,35 @@ Meteor.methods({
           user_id: uuidv4(),
           name: userName,
           email: email,
+          status: new Date(),
           created_at: new Date()
         }
       }
     );
+  },
+
+  changeUserStatus: function(id, status) {
+    console.log(id, status);
+
+    if (status === 'online') {
+      Meteor.users.update(
+        { _id: id },
+        {
+          $set: {
+            status: 'online'
+          }
+        }
+      );
+    } else {
+      Meteor.users.update(
+        { _id: id },
+        {
+          $set: {
+            status: new Date()
+          }
+        }
+      );
+    }
   },
 
   addUserConnection: function(id) {

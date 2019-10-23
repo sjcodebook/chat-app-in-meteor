@@ -5,6 +5,8 @@ import socket_io from 'socket.io';
 
 const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
 const connections = [];
+let userIds = {};
+let currUserId = '';
 
 // Client-side config
 WebAppInternals.addStaticJs(`
@@ -21,7 +23,6 @@ Meteor.startup(() => {
   io.on('connection', function(socket) {
     socket.room = socket.id;
     connections.push(socket);
-
     console.log('connected: %s sockets connected', connections.length);
 
     // We are using room of socket io
@@ -41,6 +42,10 @@ Meteor.startup(() => {
       });
     });
 
+    socket.on('saveUserId', function(data) {
+      currUserId = data;
+    });
+
     // Disconnect
     socket.on('disconnect', data => {
       connections.splice(connections.indexOf(data), 1);
@@ -54,4 +59,25 @@ Meteor.startup(() => {
   } catch (e) {
     console.error(e);
   }
+});
+
+Meteor.onConnection(function(conn) {
+  console.log('Meteoe connected');
+
+  userIds[conn.id] = currUserId;
+  conn.onClose(function() {
+    const currUser = userIds[conn.id];
+    delete userIds[conn.id];
+    console.log(conn.id + 'user left');
+    Meteor.call('changeUserStatus', currUser, 'offline', function(
+      error,
+      result
+    ) {
+      if (error) {
+        console.log('Error while Updating Online Status');
+      } else {
+        console.log('Status Updated from Server');
+      }
+    });
+  });
 });

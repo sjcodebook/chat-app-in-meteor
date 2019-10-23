@@ -6,12 +6,14 @@ const socket = require('socket.io-client')(`http://localhost:${PORT}`);
 
 Meteor.startup(() => {
   socket.on('connect', function() {
+    Meteor.call('changeUserStatus', Meteor.userId(), 'online');
+    socket.emit('saveUserId', Meteor.userId());
     console.log('Client connected');
   });
 });
 
 socket.on('disconnect', function() {
-  console.log('Client disconnected');
+  console.log('Client Disconnected');
 });
 
 socket.on('connectToRoom', function(data) {
@@ -220,8 +222,14 @@ Template.main.events({
         id="pic"
     /></a>
     <div class="d-flex flex-column">
-      <div class="text-white font-weight-bold" id="name">${connectedUser[0].name}</div>
-      <div class="text-white small" id="details">${connectedUser[0].email}</div>
+      <div class="text-white font-weight-bold" id="name">${
+        connectedUser[0].name
+      }</div>
+      <div class="text-white small" id="details">${
+        connectedUser[0].status === 'online'
+          ? 'online'
+          : `Last Seen ${moment(connectedUser[0].status, '').fromNow()}`
+      }</div>
     </div>
     <div class="d-flex flex-row align-items-center ml-auto">
       <a href="#"
