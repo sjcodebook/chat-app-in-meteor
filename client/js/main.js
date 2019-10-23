@@ -22,47 +22,47 @@ socket.on('connectToRoom', function(data) {
     document.getElementById('chatBox').insertAdjacentHTML(
       'beforeend',
       `<div
-      class="align-self-end self p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
-    >
+      class="align-self-end self p-2 my-1 mx-3 rounded bg-white shadow-sm message-item"
+      >
       <div class="options">
-        <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+        <a href="#"><i class="fas fa-angle-down text-muted"></i></a>
       </div>
       <span style='font-weight: 600;'>
-      ${data.name}
+     You:
       </span>
       <div class="d-flex flex-row">
-        <div class="body m-1 mr-2"> ${data.msg}</div>
+        <div class="body mr-2"> ${data.msg}</div>
         <div
           class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
           style="width:75px;"
         >
-       ${data.created_at} <i class="fa fa-check-circle"></i>
+          ${data.created_at} <i class="fa fa-check-circle"></i>
         </div>
       </div>
-    </div>`
+      </div>`
     );
   } else {
     document.getElementById('chatBox').insertAdjacentHTML(
       'beforeend',
       `<div
-      class="align-self-start p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
-    >
+      class="align-self-start p-2 my-1 mx-3 rounded bg-white shadow-sm message-item"
+      >
       <div class="options">
-        <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+        <a href="#"><i class="fas fa-angle-down text-muted"></i></a>
       </div>
       <span style='font-weight: 600;'>
-      ${data.name}
+      ${data.name}:
       </span>
       <div class="d-flex flex-row">
-        <div class="body m-1 mr-2">${data.msg}</div>
+        <div class="body mr-2"> ${data.msg}</div>
         <div
           class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
           style="width:75px;"
         >
-        ${data.created_at} <i class="fa fa-check-circle"></i>
+          ${data.created_at} <i class="fa fa-check-circle"></i>
         </div>
       </div>
-    </div>
+      </div>
         `
     );
   }
@@ -202,16 +202,16 @@ Template.main.events({
           msgStr +
           `
           <div
-          class="align-self-end self p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
+          class="align-self-end self p-2 my-1 mx-3 rounded bg-white shadow-sm message-item"
         >
           <div class="options">
-            <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+            <a href="#"><i class="fas fa-angle-down text-muted"></i></a>
           </div>
           <span style='font-weight: 600;'>
-          ${currUser[0].name}
+          You:
           </span>
           <div class="d-flex flex-row">
-            <div class="body m-1 mr-2">${e.content}</div>
+            <div class="body mr-2">${e.content}</div>
             <div
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
@@ -227,23 +227,23 @@ Template.main.events({
         msgStr =
           msgStr +
           `<div
-          class="align-self-start p-1 my-1 mx-3 rounded bg-white shadow-sm message-item"
+          class="align-self-start p-2 my-1 mx-3 rounded bg-white shadow-sm message-item"
         >
           <div class="options">
-            <a href="#"><i class="fas fa-angle-down text-muted px-2"></i></a>
+            <a href="#"><i class="fas fa-angle-down text-muted"></i></a>
           </div>
           <span style='font-weight: 600;'>
-          ${connectedUser[0].name}
+          ${connectedUser[0].name}:
           </span>
           <div class="d-flex flex-row">
-            <div class="body m-1 mr-2">${e.content}</div>
+            <div class="body mr-2">${e.content}</div>
             <div
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
             ${moment(e.created_at).format(
               'LT'
-            )}  <i class="fa fa-check-circle"></i>
+            )} <i class="fa fa-check-circle"></i>
             </div>
           </div>
         </div>`;
