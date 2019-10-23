@@ -109,6 +109,42 @@ Template.main.helpers({
       e.last_connected = moment(e.last_connected).format('ll');
     });
     return co;
+  },
+
+  fetchLastmessage(id) {
+    const lastmsg = [];
+    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
+    const sentArr = messages
+        .find({
+          send_by: currUser[0].user_id,
+          recieved_by: id
+        })
+        .fetch(),
+      recievedArr = messages
+        .find({
+          send_by: id,
+          recieved_by: currUser[0].user_id
+        })
+        .fetch(),
+      allMessages = sentArr.concat(recievedArr);
+
+    allMessages.sort((a, b) => (a.created_at > b.created_at ? 1 : -1));
+    lastmsg.push(allMessages[allMessages.length - 1]);
+    return lastmsg;
+  },
+
+  sentByUser(msg_id) {
+    const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
+    const msg = messages
+      .find({
+        message_id: msg_id
+      })
+      .fetch();
+    if (currUser[0].user_id === msg[0].send_by) {
+      return true;
+    } else {
+      return false;
+    }
   }
 });
 

@@ -97,7 +97,13 @@
               />
               <div class="w-50">
                 <div class="name">{{ name }}</div>
-                <div class="small last-message">{{ email }}</div>
+                {{#each fetchLastmessage user_id}}
+                <div class="small last-message">
+                  {{#if sentByUser message_id
+                  }}<i class="fa fa-check-circle text-secondary mr-2"></i>{{/if
+                  }}{{ content }}
+                </div>
+                {{/each}}
               </div>
               <div class="flex-grow-1 text-right">
                 {{#each fetchLastConnection user_id}}
