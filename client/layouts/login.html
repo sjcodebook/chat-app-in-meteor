@@ -1,10 +1,10 @@
 <template name="Login">
+  {{#if Template.subscriptionsReady}}
   {{#if currentUser }}
   <script>
-    BlazeLayout.render('main');
+    window.location = '/chat';
   </script>
   {{else}}
-
   <main>
     <div class="container" style="text-align: center; width: 30%;">
       <h3 class="display-4">Meteor Chat App</h3>
@@ -39,5 +39,15 @@
       <a href="/signup">Register</a>
     </div>
   </main>
+  {{/if}}
+  {{else}}
+  <div style="text-align: center" class="mt-3">
+    <i
+      id="loginLoader"
+      class="spinner fas fa-atom mr-2 mb-3 mt-3 "
+      style="font-size:6em; color:#aed9f5; "
+    ></i>
+    <h3 class="display-5">Loading...</h3>
+  </div>
   {{/if}}
 </template>

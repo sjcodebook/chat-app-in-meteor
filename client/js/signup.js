@@ -1,5 +1,12 @@
 import { Template } from 'meteor/templating';
 
+Template.signup.onCreated(function() {
+  let self = this;
+  self.autorun(function() {
+    self.subscribe('userConnections');
+  });
+});
+
 Template.signup.events({
   'submit .signup-form': function(e, template) {
     e.preventDefault();
@@ -20,6 +27,6 @@ Template.signup.events({
         });
       }
     });
-    window.location = '/';
+    window.location = '/chat';
   }
 });

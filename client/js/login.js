@@ -1,5 +1,12 @@
 import { Template } from 'meteor/templating';
 
+Template.Login.onCreated(function() {
+  let self = this;
+  self.autorun(function() {
+    self.subscribe('userConnections');
+  });
+});
+
 Template.Login.events({
   'submit .login-form': function(event, template) {
     event.preventDefault();
@@ -19,6 +26,8 @@ Template.Login.events({
       document.getElementById('signInBtn').innerText = 'Sign In';
       if (error) {
         sAlert.error('Invalid Email Or Password');
+      } else {
+        window.location = '/chat';
       }
     });
   }
