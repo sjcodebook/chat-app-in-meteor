@@ -162,3 +162,11 @@ a {
 .active-user {
   background: hsl(0, 0%, 90%) !important;
 }
+
+.greenColor {
+  color: rgb(13, 168, 13) !important;
+}
+
+.redColor {
+  color: rgb(184, 41, 41) !important;
+}

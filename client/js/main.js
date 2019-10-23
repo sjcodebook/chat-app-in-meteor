@@ -145,6 +145,15 @@ Template.main.helpers({
     } else {
       return false;
     }
+  },
+
+  isOnline(id) {
+    const user = Meteor.users.find({ user_id: id }).fetch();
+    if (user[0].status === 'online') {
+      return true;
+    } else {
+      return false;
+    }
   }
 });
 

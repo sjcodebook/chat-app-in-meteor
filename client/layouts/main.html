@@ -89,6 +89,10 @@
               id="{{ user_id }}"
               style="width: 100%;"
             >
+              <i
+                style="padding-top: 18px; font-size: .6rem;"
+                class="mr-2 fa fa-circle {{#if isOnline user_id}}greenColor{{else}}redColor{{/if}}"
+              ></i>
               <img
                 src="/images/person.png"
                 alt="Profile Photo"
