@@ -18,7 +18,7 @@ socket.on('disconnect', function() {
 
 socket.on('connectToRoom', function(data) {
   const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
-  if (currUser[0].user_id === data.msg_id) {
+  if (currUser[0].user_id === data.curruser_id) {
     document.getElementById('chatBox').insertAdjacentHTML(
       'beforeend',
       `<div
@@ -300,7 +300,7 @@ Template.main.events({
         msg: msgContent,
         room_id: connected_room_id[0].room_id,
         name: currUser[0].name,
-        message_id: currUser[0].user_id,
+        curruser_id: currUser[0].user_id,
         created_at: moment(new Date()).format('LT')
       });
 

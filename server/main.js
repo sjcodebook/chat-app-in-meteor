@@ -37,7 +37,7 @@ Meteor.startup(() => {
       io.sockets.in(socket.room).emit('connectToRoom', {
         msg: data.msg,
         name: data.name,
-        msg_id: data.message_id,
+        curruser_id: data.curruser_id,
         created_at: data.created_at
       });
     });
