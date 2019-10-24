@@ -102,29 +102,16 @@
               <div class="w-50">
                 <div class="name">{{ name }}</div>
                 {{#each fetchLastmessage user_id}}
-                <div class="small last-message">
-                  {{#if sentByUser message_id
-
-
-
-
-
-
-
-
-
-                  }}<i class="fa fa-check-circle text-secondary mr-2"></i
+                <div
+                  class="small last-message {{#if readStatus is_read}}boldText{{/if}}"
+                >
+                  {{#if sentByUser message_id}}
+                  <i
+                    class="fa fa-check-circle {{#if readStatus is_read}}text-secondary{{else}}text-info{{/if}}"
+                  ></i
                   >{{/if
-
-
-
-
-
-
-
-
-
-                  }}{{ content }}
+                  }}
+                  {{ content }}
                 </div>
                 {{/each}}
               </div>

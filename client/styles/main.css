@@ -170,3 +170,7 @@ a {
 .redColor {
   color: rgb(184, 41, 41) !important;
 }
+
+.boldText {
+  font-weight: 700 !important;
+}

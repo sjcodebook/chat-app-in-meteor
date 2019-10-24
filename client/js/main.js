@@ -36,7 +36,7 @@ socket.on('connectToRoom', function(data) {
           class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
           style="width:75px;"
         >
-          ${data.created_at} <i class="fa fa-check-circle"></i>
+          ${data.created_at} 
         </div>
       </div>
       </div>`
@@ -59,7 +59,7 @@ socket.on('connectToRoom', function(data) {
           class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
           style="width:75px;"
         >
-          ${data.created_at} <i class="fa fa-check-circle"></i>
+          ${data.created_at} 
         </div>
       </div>
       </div>
@@ -131,6 +131,7 @@ Template.main.helpers({
 
     allMessages.sort((a, b) => (a.created_at > b.created_at ? 1 : -1));
     lastmsg.push(allMessages[allMessages.length - 1]);
+
     return lastmsg;
   },
 
@@ -154,6 +155,14 @@ Template.main.helpers({
       return true;
     } else {
       return false;
+    }
+  },
+
+  readStatus(is_read) {
+    if (is_read) {
+      return false;
+    } else {
+      return true;
     }
   },
 
@@ -194,6 +203,18 @@ Template.main.events({
         .find({ user_id: e.currentTarget.id })
         .fetch();
     $(`#${connectedUser[0].user_id}`).addClass('active-user');
+
+    const unreadMsgArr = messages
+      .find({
+        send_by: connectedUser[0].user_id,
+        recieved_by: currUser[0].user_id,
+        is_read: false
+      })
+      .fetch();
+
+    unreadMsgArr.forEach(e => {
+      Meteor.call('changeMsgReadStatus', e.message_id);
+    });
 
     const sentArr = messages
         .find({
@@ -243,9 +264,7 @@ Template.main.events({
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
-            ${moment(e.created_at).format(
-              'LT'
-            )} <i class="fa fa-check-circle"></i>
+            ${moment(e.created_at).format('LT')}
             </div>
           </div>
         </div>
@@ -268,9 +287,7 @@ Template.main.events({
               class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
               style="width:75px;"
             >
-            ${moment(e.created_at).format(
-              'LT'
-            )} <i class="fa fa-check-circle"></i>
+            ${moment(e.created_at).format('LT')} 
             </div>
           </div>
         </div>`;
@@ -301,6 +318,7 @@ Template.main.events({
             id="${currUser[0].user_id}"
             placeholder="Type a message"
             class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm text-message-area input"
+            autocomplete="off"
           />
           <i
             id="${connectedUser[0].user_id}"
@@ -324,8 +342,11 @@ Template.main.events({
 
   'click .sendMsgBtn': function(e) {
     const currUser = Meteor.users
-      .find({ user_id: $('.text-message-area').attr('id') })
-      .fetch();
+        .find({ user_id: $('.text-message-area').attr('id') })
+        .fetch(),
+      connectedUser = Meteor.users
+        .find({ user_id: e.currentTarget.id })
+        .fetch();
     const msgContent = $('.text-message-area').val();
     let connected_room_id = connections
       .find({
@@ -335,7 +356,17 @@ Template.main.events({
       .fetch();
 
     if (msgContent !== '') {
-      Meteor.call('addNewMessage', e.currentTarget.id, msgContent);
+      let is_read = false;
+      const currUserConnection = currActiveUser
+        .find({ user_id: e.currentTarget.id })
+        .fetch();
+      if (
+        currUserConnection[0].connected_to === currUser[0].user_id &&
+        connectedUser[0].status === 'online'
+      ) {
+        is_read = true;
+      }
+      Meteor.call('addNewMessage', e.currentTarget.id, msgContent, is_read);
       socket.emit('send message', {
         msg: msgContent,
         room_id: connected_room_id[0].room_id,

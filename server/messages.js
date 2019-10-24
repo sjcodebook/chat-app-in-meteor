@@ -4,7 +4,7 @@ import connections from './../collections/connections';
 import uuidv4 from 'uuid/v4';
 
 Meteor.methods({
-  addNewMessage: function(id, content) {
+  addNewMessage: function(id, content, is_read) {
     const currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch();
 
     messages.insert({
@@ -12,6 +12,7 @@ Meteor.methods({
       send_by: currUser[0].user_id,
       recieved_by: id,
       content: content,
+      is_read: is_read,
       created_at: new Date()
     });
 
@@ -20,6 +21,17 @@ Meteor.methods({
       {
         $set: {
           last_connected: new Date()
+        }
+      }
+    );
+  },
+
+  changeMsgReadStatus: function(id) {
+    messages.update(
+      { message_id: id },
+      {
+        $set: {
+          is_read: true
         }
       }
     );
