@@ -1,8 +1,8 @@
 import { Template } from 'meteor/templating';
 import moment from 'moment';
-// const PORT = window.socketPort || 3003;
-// const socket = require('socket.io-client')(`http://localhost:${PORT}`);
-const socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
+const PORT = window.socketPort || 3003;
+const socket = require('socket.io-client')(`http://localhost:${PORT}`);
+// const socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
 
 Meteor.startup(() => {
   socket.on('connect', function() {
@@ -284,15 +284,6 @@ Template.main.events({
       currUser[0].user_id,
       connectedUser[0].user_id
     );
-
-    // setInterval(() => {
-    //   const activeUser = Meteor.users
-    //     .find({ user_id: connectedUser[0].user_id })
-    //     .fetch();
-    //   document.getElementById('activeUserStatus').innerText = '';
-    //   document.getElementById('activeUserStatus').innerText =
-    //     activeUser[0].status;
-    // }, 2000);
 
     document.getElementById('chatBox').insertAdjacentHTML('afterbegin', msgStr);
 
