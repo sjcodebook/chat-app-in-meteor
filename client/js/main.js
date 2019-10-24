@@ -82,6 +82,7 @@ Template.main.onCreated(function() {
     self.subscribe('Meteor.users');
     self.subscribe('connections');
     self.subscribe('messages');
+    self.subscribe('currActiveUser');
     Meteor.subscribe('userConnections');
   });
 });
@@ -154,6 +155,32 @@ Template.main.helpers({
     } else {
       return false;
     }
+  },
+
+  activeUserStatus() {
+    let status = [],
+      currUser = Meteor.users.find({ _id: Meteor.userId() }).fetch(),
+      user = currActiveUser.find({ user_id: currUser[0].user_id }).fetch(),
+      connectedUser = Meteor.users
+        .find({ user_id: user[0].connected_to })
+        .fetch();
+
+    if (connectedUser[0].status === 'online') {
+      status = [];
+      const obj = {};
+      obj['status'] = 'online';
+      status.push(obj);
+    } else {
+      status = [];
+      const obj = {};
+      obj['status'] = `Last Seen ${moment(
+        connectedUser[0].status,
+        ''
+      ).fromNow()}`;
+      status.push(obj);
+    }
+
+    return status;
   }
 });
 
@@ -184,7 +211,7 @@ Template.main.events({
 
     allMessages.sort((a, b) => (a.created_at > b.created_at ? 1 : -1));
 
-    $('#mainContainerChatHead').empty();
+    $('#startingBlankCover').empty();
     $('#chatBox').empty();
     $('#messageContainer').empty();
 
@@ -250,45 +277,22 @@ Template.main.events({
       }
     });
 
-    document.getElementById('mainContainerChatHead').insertAdjacentHTML(
-      'afterbegin',
-      `   <div class="d-block d-sm-none">
-      <i
-        class="fas fa-arrow-left p-2 mr-2 text-white"
-        style="font-size: 1.5rem; cursor: pointer;"
-      ></i>
-    </div>
-    <a href="#"
-      ><img
-        src="/images/person.png"
-        alt="Profile Photo"
-        class="img-fluid rounded-circle mr-2"
-        style="height:50px;"
-        id="pic"
-    /></a>
-    <div class="d-flex flex-column">
-      <div class="text-white font-weight-bold" id="name">${
-        connectedUser[0].name
-      }</div>
-      <div class="text-white small" id="details">${
-        connectedUser[0].status === 'online'
-          ? 'online'
-          : `Last Seen ${moment(connectedUser[0].status, '').fromNow()}`
-      }</div>
-    </div>
-    <div class="d-flex flex-row align-items-center ml-auto">
-      <a href="#"
-        ><i class="fas fa-search mx-3 text-white d-none d-md-block"></i
-      ></a>
-      <a href="#"
-        ><i class="fas fa-paperclip mx-3 text-white d-none d-md-block"></i
-      ></a>
-      <a href="#"
-        ><i class="fas fa-ellipsis-v mr-2 mx-sm-3 text-white"></i
-      ></a>
-    </div>
-    `
+    document.getElementById('activeUserName').innerText = connectedUser[0].name;
+
+    Meteor.call(
+      'changeCurrentActiveUser',
+      currUser[0].user_id,
+      connectedUser[0].user_id
     );
+
+    // setInterval(() => {
+    //   const activeUser = Meteor.users
+    //     .find({ user_id: connectedUser[0].user_id })
+    //     .fetch();
+    //   document.getElementById('activeUserStatus').innerText = '';
+    //   document.getElementById('activeUserStatus').innerText =
+    //     activeUser[0].status;
+    // }, 2000);
 
     document.getElementById('chatBox').insertAdjacentHTML('afterbegin', msgStr);
 

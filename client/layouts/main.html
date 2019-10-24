@@ -104,7 +104,26 @@
                 {{#each fetchLastmessage user_id}}
                 <div class="small last-message">
                   {{#if sentByUser message_id
-                  }}<i class="fa fa-check-circle text-secondary mr-2"></i>{{/if
+
+
+
+
+
+
+
+
+
+                  }}<i class="fa fa-check-circle text-secondary mr-2"></i
+                  >{{/if
+
+
+
+
+
+
+
+
+
                   }}{{ content }}
                 </div>
                 {{/each}}
@@ -140,11 +159,47 @@
           id="mainContainerChatHead"
           style="position:fixed;top:0;z-index:1030; width: 76vw;"
         >
-          <div
-            style="width: 100%; height: 100vh; text-align: center; margin-top: 110px;"
-            class="display-4"
-          >
-            <div class="w-100 h-100 overlay"></div>
+          <div id="startingBlankCover">
+            <div
+              style="width: 100%; height: 100vh; text-align: center; margin-top: 110px;"
+              class="display-4"
+            >
+              <div class="w-100 h-100 overlay"></div>
+            </div>
+          </div>
+
+          <div class="d-block d-sm-none">
+            <i
+              class="fas fa-arrow-left p-2 mr-2 text-white"
+              style="font-size: 1.5rem; cursor: pointer;"
+            ></i>
+          </div>
+          <a href="#"
+            ><img
+              src="/images/person.png"
+              alt="Profile Photo"
+              class="img-fluid rounded-circle mr-2"
+              style="height:50px;"
+              id="pic"
+          /></a>
+          <div class="d-flex flex-column">
+            <div class="text-white font-weight-bold" id="activeUserName"></div>
+            {{#each activeUserStatus}}
+            <div class="text-white small" id="activeUserStatus">
+              {{ status }}
+            </div>
+            {{/each}}
+          </div>
+          <div class="d-flex flex-row align-items-center ml-auto">
+            <a href="#"
+              ><i class="fas fa-search mx-3 text-white d-none d-md-block"></i
+            ></a>
+            <a href="#"
+              ><i class="fas fa-paperclip mx-3 text-white d-none d-md-block"></i
+            ></a>
+            <a href="#"
+              ><i class="fas fa-ellipsis-v mr-2 mx-sm-3 text-white"></i
+            ></a>
           </div>
         </div>
 

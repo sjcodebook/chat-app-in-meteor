@@ -24,8 +24,6 @@ Meteor.methods({
   },
 
   changeUserStatus: function(id, status) {
-    console.log(id, status);
-
     if (status === 'online') {
       Meteor.users.update(
         { _id: id },
@@ -93,5 +91,25 @@ Meteor.methods({
       });
     }
     return true;
+  },
+
+  changeCurrentActiveUser: function(curr_id, connect_id) {
+    let user = currActiveUser.find({ user_id: curr_id }).fetch();
+    if (user.length === 0) {
+      currActiveUser.insert({
+        log_id: uuidv4(),
+        user_id: curr_id,
+        connected_to: connect_id
+      });
+    } else {
+      currActiveUser.update(
+        { user_id: curr_id },
+        {
+          $set: {
+            connected_to: connect_id
+          }
+        }
+      );
+    }
   }
 });
