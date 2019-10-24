@@ -1,23 +1,23 @@
 import { Meteor } from 'meteor/meteor';
-import http from 'http';
+// import http from 'http';
 import socket_io from 'socket.io';
-// import { WebApp } from 'meteor/webapp';
+import { WebApp } from 'meteor/webapp';
 
-const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
+// const PORT = parseInt(process.env.SOCKET_PORT) || 3003;
 const connections = [];
 let userIds = {};
 let currUserId = '';
 
 // Client-side config
-WebAppInternals.addStaticJs(`
-  window.socketPort = ${PORT};
-`);
+// WebAppInternals.addStaticJs(`
+//   window.socketPort = ${PORT};
+// `);
 
 Meteor.startup(() => {
   // Server
-  const server = http.createServer();
-  const io = socket_io(server);
-  // const io = socket_io(WebApp.httpServer);
+  // const server = http.createServer();
+  // const io = socket_io(server);
+  const io = socket_io(WebApp.httpServer);
 
   // New client
   io.on('connection', function(socket) {
@@ -54,11 +54,11 @@ Meteor.startup(() => {
   });
 
   // Start server
-  try {
-    server.listen(PORT);
-  } catch (e) {
-    console.error(e);
-  }
+  // try {
+  //   server.listen(PORT);
+  // } catch (e) {
+  //   console.error(e);
+  // }
 });
 
 Meteor.onConnection(function(conn) {
