@@ -1,8 +1,8 @@
 import { Template } from 'meteor/templating';
 import moment from 'moment';
-const PORT = window.socketPort || 3003;
-const socket = require('socket.io-client')(`http://localhost:${PORT}`);
-// const socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
+// const PORT = window.socketPort || 3003;
+// const socket = require('socket.io-client')(`http://localhost:${PORT}`);
+const socket = require('socket.io-client')(`https://chatmeteor.herokuapp.com/`);
 
 Meteor.startup(() => {
   socket.on('connect', function() {
