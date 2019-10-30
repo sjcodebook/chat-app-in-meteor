@@ -62,7 +62,7 @@ Meteor.startup(() => {
 });
 
 Meteor.onConnection(function(conn) {
-  console.log('Meteoe connected');
+  console.log('Meteor connected');
 
   userIds[conn.id] = currUserId;
   conn.onClose(function() {

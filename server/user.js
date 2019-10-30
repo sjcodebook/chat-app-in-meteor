@@ -4,16 +4,17 @@ import uuidv4 from 'uuid/v4';
 
 Meteor.methods({
   addUserMethod: function(email, userName, pass) {
-    let userId = Accounts.createUser({
-      email: email,
-      password: pass
-    });
+    let user_id = uuidv4(),
+      Id = Accounts.createUser({
+        email: email,
+        password: pass
+      });
 
     Meteor.users.update(
-      { _id: userId },
+      { _id: Id },
       {
         $set: {
-          user_id: uuidv4(),
+          user_id: user_id,
           name: userName,
           email: email,
           status: new Date(),
@@ -21,6 +22,12 @@ Meteor.methods({
         }
       }
     );
+
+    currActiveUser.insert({
+      log_id: uuidv4(),
+      user_id: user_id,
+      connected_to: 'none'
+    });
   },
 
   changeUserStatus: function(id, status) {
@@ -94,22 +101,13 @@ Meteor.methods({
   },
 
   changeCurrentActiveUser: function(curr_id, connect_id) {
-    let user = currActiveUser.find({ user_id: curr_id }).fetch();
-    if (user.length === 0) {
-      currActiveUser.insert({
-        log_id: uuidv4(),
-        user_id: curr_id,
-        connected_to: connect_id
-      });
-    } else {
-      currActiveUser.update(
-        { user_id: curr_id },
-        {
-          $set: {
-            connected_to: connect_id
-          }
+    currActiveUser.update(
+      { user_id: curr_id },
+      {
+        $set: {
+          connected_to: connect_id
         }
-      );
-    }
+      }
+    );
   }
 });
