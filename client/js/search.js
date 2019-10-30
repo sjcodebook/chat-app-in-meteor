@@ -11,7 +11,7 @@ Template.search.events({
   'change #searchInput': function() {
     $('#searchResults').empty();
     let input = $('#searchInput').val();
-    let userArr = Meteor.users.find({ email: input }).fetch();
+    let userArr = Meteor.users.find({ email: input.toLowerCase() }).fetch();
     if (userArr.length <= 0) {
       document.getElementById('searchResults').insertAdjacentHTML(
         'afterbegin',

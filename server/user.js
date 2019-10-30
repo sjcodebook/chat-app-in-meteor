@@ -6,7 +6,7 @@ Meteor.methods({
   addUserMethod: function(email, userName, pass) {
     let user_id = uuidv4(),
       Id = Accounts.createUser({
-        email: email,
+        email: email.toLowerCase(),
         password: pass
       });
 
@@ -16,7 +16,7 @@ Meteor.methods({
         $set: {
           user_id: user_id,
           name: userName,
-          email: email,
+          email: email.toLowerCase(),
           status: new Date(),
           created_at: new Date()
         }
